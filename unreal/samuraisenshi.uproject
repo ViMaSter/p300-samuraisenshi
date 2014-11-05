@@ -1,0 +1,16 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "{6E188562-4933-4759-35E2-299F01146177}",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "samuraisenshi",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	],
+	"TargetPlatforms": [
+		"WindowsNoEditor"
+	]
+}
