@@ -7,6 +7,5 @@
 ANPC_Enemy::ANPC_Enemy(const class FPostConstructInitializeProperties& PCIP)
 	: Super(PCIP)
 {
-	health = 5;
-	damageDealing = 1;
+
 }

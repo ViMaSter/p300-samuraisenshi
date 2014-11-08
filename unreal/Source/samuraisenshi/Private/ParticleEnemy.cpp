@@ -10,13 +10,5 @@ AParticleEnemy::AParticleEnemy(const class FPostConstructInitializeProperties& P
 	Trail = PCIP.CreateDefaultSubobject<UParticleSystemComponent>(this, TEXT("Trail"));
 	Trail->AttachTo(RootComponent);
 
-	health = 5;
-	damageDealing = 1;
-}
 
-void AParticleEnemy::doTakeDamage(int32 damage)
-{
-	health -= damage;
-	if (health < 0)
-		Destroy(false, true);
 }

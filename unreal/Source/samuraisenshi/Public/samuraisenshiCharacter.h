@@ -1,21 +1,12 @@
 // Copyright 1998-2014 Epic Games, Inc. All Rights Reserved.
 #pragma once
-#include "GameFramework/Character.h"
+#include "GeneralCharacter.h"
 #include "samuraisenshiCharacter.generated.h"
 
-UCLASS(config=Game)
-class AsamuraisenshiCharacter : public ACharacter
+UCLASS()
+class AsamuraisenshiCharacter : public AGeneralCharacter
 {
 	GENERATED_UCLASS_BODY()
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enemy)
-	int32 health;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enemy)
-	int32 damageDealing;
-
-	UFUNCTION(BlueprintCallable, Category = "Events")
-	void takeDamage(int32 damage);
 
 	/** Side view camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
@@ -32,13 +23,7 @@ class AsamuraisenshiCharacter : public ACharacter
 protected:
 
 	/** Called for side to side input */
-	void MoveRight(float Val);
-
-	/** Handle touch inputs. */
-	void TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location);
-
-	/** Handle touch stop event. */
-	void TouchStopped(const ETouchIndex::Type FingerIndex, const FVector Location);
+	void Move(float intensity);
 
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
