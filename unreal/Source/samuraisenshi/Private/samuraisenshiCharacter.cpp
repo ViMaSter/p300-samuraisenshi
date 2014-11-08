@@ -37,7 +37,7 @@ AsamuraisenshiCharacter::AsamuraisenshiCharacter(const class FPostConstructIniti
 	CharacterMovement->RotationRate = FRotator(0.0f, 720.0f, 0.0f); // ...at this rotation rate
 	CharacterMovement->GravityScale = 2.f;
 	CharacterMovement->AirControl = 0.80f;
-	CharacterMovement->JumpZVelocity = 1000.f;
+	CharacterMovement->JumpZVelocity = 0.f;
 	CharacterMovement->GroundFriction = 3.f;
 	CharacterMovement->MaxWalkSpeed = 600.f;
 	CharacterMovement->MaxFlySpeed = 600.f;
@@ -52,32 +52,11 @@ AsamuraisenshiCharacter::AsamuraisenshiCharacter(const class FPostConstructIniti
 void AsamuraisenshiCharacter::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 {
 	// set up gameplay key bindings
-	InputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
-	InputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
-	InputComponent->BindAxis("MoveRight", this, &AsamuraisenshiCharacter::MoveRight);
-
-	InputComponent->BindTouch(IE_Pressed, this, &AsamuraisenshiCharacter::TouchStarted);
-	InputComponent->BindTouch(IE_Released, this, &AsamuraisenshiCharacter::TouchStopped);
+	InputComponent->BindAxis("Move X", this, &AsamuraisenshiCharacter::Move);
 }
 
-void AsamuraisenshiCharacter::MoveRight(float Value)
+void AsamuraisenshiCharacter::Move(float intensity)
 {
 	// add movement in that direction
-	AddMovementInput(FVector(0.f,-1.f,0.f), Value);
-}
-
-void AsamuraisenshiCharacter::TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location)
-{
-	// jump on any touch
-	Jump();
-}
-
-void AsamuraisenshiCharacter::TouchStopped(const ETouchIndex::Type FingerIndex, const FVector Location)
-{
-	StopJumping();
-}
-
-void AsamuraisenshiCharacter::takeDamage(int32 damage)
-{
-	health -= damage;
+	AddMovementInput(FVector(0.f, -1.f, 0.f), intensity);
 }

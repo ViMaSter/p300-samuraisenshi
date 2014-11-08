@@ -2,22 +2,16 @@
 
 #pragma once
 
-#include "GameFramework/Character.h"
+#include "GeneralCharacter.h"
 #include "NPC_Enemy.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SAMURAISENSHI_API ANPC_Enemy : public ACharacter
+class SAMURAISENSHI_API ANPC_Enemy : public AGeneralCharacter
 {
 	GENERATED_UCLASS_BODY()
 
-public:
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enemy)
-		int32 health;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enemy)
-		int32 damageDealing;
 };
