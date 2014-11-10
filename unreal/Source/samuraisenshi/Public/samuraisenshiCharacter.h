@@ -1,10 +1,10 @@
 // Copyright 1998-2014 Epic Games, Inc. All Rights Reserved.
 #pragma once
-#include "GeneralCharacter.h"
+#include "CharacterAttributesComponent.h"
 #include "samuraisenshiCharacter.generated.h"
 
 UCLASS()
-class AsamuraisenshiCharacter : public AGeneralCharacter
+class AsamuraisenshiCharacter : public ACharacter
 {
 	GENERATED_UCLASS_BODY()
 
@@ -19,6 +19,10 @@ class AsamuraisenshiCharacter : public AGeneralCharacter
 	/** Camera boom positioning the camera beside the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	TSubobjectPtr<class USceneComponent> AttackPivot;
+
+	/** General attributes every character in our game shares */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Character)
+	TSubobjectPtr<class UCharacterAttributesComponent> CharacterAttributes;
 
 protected:
 

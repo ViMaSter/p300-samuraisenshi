@@ -6,6 +6,10 @@
 AsamuraisenshiCharacter::AsamuraisenshiCharacter(const class FPostConstructInitializeProperties& PCIP)
 	: Super(PCIP)
 {
+	// Setup attributes
+	CharacterAttributes = PCIP.CreateDefaultSubobject<UCharacterAttributesComponent>(this, TEXT("Character Attributes"));
+	CharacterAttributes->AttachTo(RootComponent);
+
 	// Set size for collision capsule
 	CapsuleComponent->InitCapsuleSize(42.f, 96.0f);
 
@@ -41,14 +45,10 @@ AsamuraisenshiCharacter::AsamuraisenshiCharacter(const class FPostConstructIniti
 	CharacterMovement->GroundFriction = 3.f;
 	CharacterMovement->MaxWalkSpeed = 600.f;
 	CharacterMovement->MaxFlySpeed = 600.f;
-
-	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
-	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 }
 
 //////////////////////////////////////////////////////////////////////////
 // Input
-
 void AsamuraisenshiCharacter::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 {
 	// set up gameplay key bindings

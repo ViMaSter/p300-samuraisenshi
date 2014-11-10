@@ -2,16 +2,19 @@
 
 #pragma once
 
-#include "GeneralCharacter.h"
+#include "CharacterAttributesComponent.h"
 #include "NPC_Enemy.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SAMURAISENSHI_API ANPC_Enemy : public AGeneralCharacter
+class SAMURAISENSHI_API ANPC_Enemy : public APawn
 {
 	GENERATED_UCLASS_BODY()
 
+	/** General attributes every character in our game shares */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Character)
+	TSubobjectPtr<class UCharacterAttributesComponent> CharacterAttributes;
 
 };
