@@ -7,7 +7,7 @@ ANPC_Enemy::ANPC_Enemy(const class FPostConstructInitializeProperties& PCIP)
 	: Super(PCIP)
 {
 	// Setup attributes
-	CharacterAttributes = PCIP.CreateDefaultSubobject<UCharacterAttributesComponent>(this, TEXT("Character Attributes"));
+	CharacterAttributes = PCIP.CreateDefaultSubobject<UComponent_CharacterAttributes>(this, TEXT("Character Attributes"));
 	RootComponent = CharacterAttributes;
 }
 

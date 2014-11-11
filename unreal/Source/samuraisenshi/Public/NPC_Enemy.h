@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CharacterAttributesComponent.h"
+#include "Component_CharacterAttributes.h"
 #include "NPC_Enemy.generated.h"
 
 /**
@@ -15,6 +15,6 @@ class SAMURAISENSHI_API ANPC_Enemy : public APawn
 
 	/** General attributes every character in our game shares */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Character)
-	TSubobjectPtr<class UCharacterAttributesComponent> CharacterAttributes;
+	TSubobjectPtr<class UComponent_CharacterAttributes> CharacterAttributes;
 
 };
