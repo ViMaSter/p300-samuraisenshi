@@ -9,7 +9,7 @@ ACharacter_General::ACharacter_General(const class FPostConstructInitializePrope
 	// Set size for collision capsule
 	CapsuleComponent->InitCapsuleSize(42.f, 96.0f);
 
-	// Don't rotate when the controller rotates.
+ 	// Don't rotate when the controller rotates.
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;

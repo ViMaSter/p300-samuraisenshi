@@ -7,7 +7,7 @@
 UComponent_CharacterAttributes::UComponent_CharacterAttributes(const class FPostConstructInitializeProperties& PCIP)
 	: Super(PCIP)
 {
-	
+	bWantsInitializeComponent = true;
 }
 
 int32 UComponent_CharacterAttributes::get_SpawningRegularHealth()
