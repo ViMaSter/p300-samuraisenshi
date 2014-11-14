@@ -78,3 +78,15 @@ void UComponent_CharacterAttributes::InitializeComponent()
 	CurrentRegularDamage = SpawningRegularDamage;
 	CurrentRegularHealth = SpawningRegularHealth;
 }
+
+
+
+AActor* UComponent_CharacterAttributes::get_LastHitBy(AActor* NewLastHitBy)
+{
+	return NewLastHitBy;
+}
+
+void UComponent_CharacterAttributes::set_LastHitBy(AActor* NewLastHitBy)
+{
+	LastHitBy = NewLastHitBy;
+}

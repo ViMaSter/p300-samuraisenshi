@@ -23,6 +23,8 @@ public:
 	UPROPERTY()
 	int32 CurrentRegularHealth;
 
+
+
 	UPROPERTY(EditAnywhere, Category = Character)
 	int32 SpawningRegularDamage;
 
@@ -31,6 +33,16 @@ public:
 
 	UPROPERTY()
 	int32 CurrentRegularDamage;
+
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Character)
+	int32 RegularRegeneration;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Character)
+	AActor* LastHitBy;
+
+
 
 
 
@@ -48,7 +60,7 @@ public:
 	int32 set_RegularHealth(int32 NewRegularHealth, bool relative);
 
 
-
+	
 	UFUNCTION(BlueprintCallable, Category = Character)
 	int32 get_SpawningRegularDamage();
 
@@ -64,5 +76,13 @@ public:
 
 
 
+	UFUNCTION(BlueprintCallable, Category = Character)
+	AActor* get_LastHitBy(AActor* NewLastHitBy);
+
+
+	UFUNCTION(BlueprintCallable, Category = Character)
+	void set_LastHitBy(AActor* NewLastHitBy);
+
+	
 	virtual void InitializeComponent() override;
 };

@@ -57,6 +57,15 @@ void ACharacter_General::SetupPlayerInputComponent(class UInputComponent* InputC
 
 void ACharacter_General::Move(float intensity)
 {
+	if (CallOnMove && abs(intensity) >= Sidestep_Deadzone)
+	{
+		OnMove(intensity);
+		CallOnMove = false;
+	}
+	else if (!CallOnMove && abs(intensity) < Sidestep_Deadzone)
+	{
+		CallOnMove = true;
+	}
 	// add movement in that direction
 	AddMovementInput(FVector(0.f, -1.f, 0.f), intensity);
 }
