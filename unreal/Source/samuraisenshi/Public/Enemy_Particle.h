@@ -2,14 +2,14 @@
 
 #pragma once
 
-#include "Enemy_NPC.h"
+#include "Enemy_General.h"
 #include "Enemy_Particle.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class AEnemy_Particle : public AEnemy_NPC
+class AEnemy_Particle : public AEnemy_General
 {
 	GENERATED_UCLASS_BODY()
 
