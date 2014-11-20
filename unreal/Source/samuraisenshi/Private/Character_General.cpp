@@ -9,7 +9,7 @@ ACharacter_General::ACharacter_General(const class FPostConstructInitializePrope
 	// Set size for collision capsule
 	CapsuleComponent->InitCapsuleSize(42.f, 96.0f);
 
-	// Don't rotate when the controller rotates.
+ 	// Don't rotate when the controller rotates.
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
@@ -57,6 +57,15 @@ void ACharacter_General::SetupPlayerInputComponent(class UInputComponent* InputC
 
 void ACharacter_General::Move(float intensity)
 {
+	if (CallOnMove && abs(intensity) >= Sidestep_Deadzone)
+	{
+		OnMove(intensity);
+		CallOnMove = false;
+	}
+	else if (!CallOnMove && abs(intensity) < Sidestep_Deadzone)
+	{
+		CallOnMove = true;
+	}
 	// add movement in that direction
 	AddMovementInput(FVector(0.f, -1.f, 0.f), intensity);
 }

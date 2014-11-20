@@ -7,7 +7,7 @@
 UComponent_CharacterAttributes::UComponent_CharacterAttributes(const class FPostConstructInitializeProperties& PCIP)
 	: Super(PCIP)
 {
-	
+	bWantsInitializeComponent = true;
 }
 
 int32 UComponent_CharacterAttributes::get_SpawningRegularHealth()
@@ -77,4 +77,16 @@ void UComponent_CharacterAttributes::InitializeComponent()
 
 	CurrentRegularDamage = SpawningRegularDamage;
 	CurrentRegularHealth = SpawningRegularHealth;
+}
+
+
+
+AActor* UComponent_CharacterAttributes::get_LastHitBy(AActor* NewLastHitBy)
+{
+	return NewLastHitBy;
+}
+
+void UComponent_CharacterAttributes::set_LastHitBy(AActor* NewLastHitBy)
+{
+	LastHitBy = NewLastHitBy;
 }

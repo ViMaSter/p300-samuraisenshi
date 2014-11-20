@@ -24,6 +24,19 @@ class ACharacter_General : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Character)
 	TSubobjectPtr<class UComponent_CharacterAttributes> CharacterAttributes;
 
+	/** Events and Variables required for sidesteps */
+	//
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Sidestep)
+	float Sidestep_Deadzone = 0.01;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Character)
+	float LastMovementInput;
+
+	bool CallOnMove = true;
+
+	UFUNCTION(BlueprintImplementableEvent, Category = Character)
+	void OnMove(float intensity);
+
 protected:
 
 	/** Called for side to side input */
