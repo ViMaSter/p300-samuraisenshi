@@ -29,13 +29,8 @@ class SAMURAISENSHI_API AActorTrigger_Boss : public AActor
 	/* Defaults */
 	ACharacter_General* PlayerCharacter;
 
-	UPROPERTY(BlueprintReadOnly, Category = Camera)
 	FVector AbsoluteStartCameraPosition;
-
-	UPROPERTY(BlueprintReadOnly, Category = Camera)
 	FVector AbsoluteCurrentCameraPosition;
-
-	UPROPERTY(BlueprintReadOnly, Category = Camera)
 	FVector AbsoluteEndCameraPosition;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Camera)
@@ -44,13 +39,18 @@ class SAMURAISENSHI_API AActorTrigger_Boss : public AActor
 	float TransitionStartAt;
 	float TransitionCurrentAt;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera)
+	int32 CurrentPhase;
+
+	// Variable that can be used to disable the triggerzone (i.e. still remaining enemies)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Camera)
 	bool CanBeTriggered;
 
-	UPROPERTY(BlueprintReadWrite, Category = Camera)
-	int32 CurrentPhase;
 
 	void BeginPlay();
-
 	virtual void Tick(float deltaTime) override;
+
+
+	UFUNCTION(BlueprintCallable, Category = Camera)
+	void ToggleCamera();
 };

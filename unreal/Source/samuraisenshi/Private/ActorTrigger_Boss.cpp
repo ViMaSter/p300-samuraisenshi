@@ -9,6 +9,7 @@ AActorTrigger_Boss::AActorTrigger_Boss(const class FPostConstructInitializePrope
 	: Super(PCIP)
 {
 	PrimaryActorTick.bCanEverTick = true;
+	CanBeTriggered = true;
 
 	CurrentPhase = 0;
 	TransitionStartAt = 0.0f;
@@ -29,17 +30,18 @@ void AActorTrigger_Boss::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (CurrentPhase != 0)
+		return;
+
 	PlayerCharacter = Cast<ACharacter_General>(GetWorld()->GetFirstPlayerController()->GetPawnOrSpectator());
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("Ran!"));
 
 	AbsoluteEndCameraPosition = CameraComponent->GetComponentLocation();
 
-	// find a trigger
+	// find the launching trigger
 	TArray<UShapeComponent*, FDefaultAllocator> PossibleShapes;
 	GetComponents<UShapeComponent>(PossibleShapes);
 
 	bool MoreThanOneTrigger = false;
-
 	for (TArray<UShapeComponent*>::TConstIterator ShapeIterator(PossibleShapes); ShapeIterator; ++ShapeIterator) {
 		if (MoreThanOneTrigger) {
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Warning: More than one trigger set on %s!"), *this->GetName()));
@@ -47,7 +49,6 @@ void AActorTrigger_Boss::BeginPlay()
 		}
 		else {
 			TriggerComponent = *ShapeIterator;
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Found %s!"), *TriggerComponent->GetName()));
 		}
 
 		MoreThanOneTrigger = true;
@@ -98,4 +99,10 @@ void AActorTrigger_Boss::Tick(float deltaTime)
 	}
 
 	CameraComponent->SetWorldLocation(AbsoluteCurrentCameraPosition);
+}
+
+void AActorTrigger_Boss::ToggleCamera()
+{
+	if (CanBeTriggered && CurrentPhase == 0)
+		CurrentPhase++;
 }

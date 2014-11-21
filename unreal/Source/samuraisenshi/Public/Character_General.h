@@ -26,7 +26,7 @@ class ACharacter_General : public ACharacter
 
 	/** Events and Variables required for sidesteps */
 	//
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Sidestep)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Sidestep)
 	float Sidestep_Deadzone = 0.01;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Character)
