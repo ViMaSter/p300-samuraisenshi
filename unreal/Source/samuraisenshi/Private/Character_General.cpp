@@ -47,6 +47,18 @@ ACharacter_General::ACharacter_General(const class FPostConstructInitializePrope
 	CharacterAttributes->AttachTo(RootComponent);
 }
 
+void ACharacter_General::Tick(float deltaTime)
+{
+	DrawDebugLine(
+		GetWorld(),
+		FVector(GetActorLocation().X, -10000, DebugZ),
+		FVector(GetActorLocation().X, 10000, DebugZ),
+		FColor(255, 255, 255),
+		false, -1, 0,
+		12.333
+	);
+}
+
 //////////////////////////////////////////////////////////////////////////
 // Input
 void ACharacter_General::SetupPlayerInputComponent(class UInputComponent* InputComponent)

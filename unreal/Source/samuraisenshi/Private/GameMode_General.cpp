@@ -3,6 +3,7 @@
 #include "samuraisenshi.h"
 #include "GameMode_General.h"
 #include "Character_General.h"
+#include "DrawDebugHelpers.h"
 
 AGameMode_General::AGameMode_General(const class FPostConstructInitializeProperties& PCIP)
 	: Super(PCIP)
