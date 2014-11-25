@@ -49,6 +49,8 @@ ACharacter_General::ACharacter_General(const class FPostConstructInitializePrope
 
 void ACharacter_General::Tick(float deltaTime)
 {
+	Super::Tick(deltaTime);
+	
 	DrawDebugLine(
 		GetWorld(),
 		FVector(GetActorLocation().X, -10000, DebugZ),
