@@ -7,7 +7,6 @@ UCLASS(minimalapi)
 class AGameMode_General : public AGameMode
 {
 	GENERATED_UCLASS_BODY()
-
 };
 
 

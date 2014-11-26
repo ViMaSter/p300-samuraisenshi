@@ -1,5 +1,6 @@
 // Copyright 1998-2014 Epic Games, Inc. All Rights Reserved.
 #pragma once
+#include "Engine.h"
 #include "Component_CharacterAttributes.h"
 #include "Character_General.generated.h"
 
@@ -37,6 +38,9 @@ class ACharacter_General : public ACharacter
 	UFUNCTION(BlueprintImplementableEvent, Category = Character)
 	void OnMove(float intensity);
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Debug)
+	float DebugZ;
+
 protected:
 
 	/** Called for side to side input */
@@ -45,5 +49,6 @@ protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 	// End of APawn interface
+	virtual void Tick(float deltaTime) override;
 
 };
