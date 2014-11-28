@@ -13,6 +13,4 @@ class SAMURAISENSHI_API APC_Ingame : public APlayerController
 {
 	GENERATED_UCLASS_BODY()
 
-	
-	
 };

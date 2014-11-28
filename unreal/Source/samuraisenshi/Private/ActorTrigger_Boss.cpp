@@ -98,6 +98,10 @@ void AActorTrigger_Boss::Tick(float deltaTime)
 			break;
 	}
 
+	if (CurrentPhase > 0 && CurrentPhase < 2) {
+
+	}
+
 	CameraComponent->SetWorldLocation(AbsoluteCurrentCameraPosition);
 }
 

@@ -7,7 +7,4 @@
 APC_Ingame::APC_Ingame(const class FPostConstructInitializeProperties& PCIP)
 	: Super(PCIP)
 {
-
 }
-
-
