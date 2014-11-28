@@ -3,3 +3,7 @@
 */Intermediate
 */Saved
 raw/
+*.suo
+*.sln
+*.sdf
+*.uproject
