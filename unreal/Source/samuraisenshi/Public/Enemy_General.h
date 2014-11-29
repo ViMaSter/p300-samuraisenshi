@@ -17,4 +17,5 @@ class SAMURAISENSHI_API AEnemy_General : public APawn
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Character)
 	TSubobjectPtr<class UComponent_CharacterAttributes> CharacterAttributes;
 
+	virtual float TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, AController* EventInstigator, AActor* DamageCauser);
 };

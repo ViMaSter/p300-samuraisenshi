@@ -5,6 +5,7 @@
 #include "Engine.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/PlayerController.h"
+#include "ActorSpawner_General.h"
 #include "Character_General.h"
 #include "ActorTrigger_Boss.generated.h"
 
@@ -15,6 +16,17 @@ UCLASS()
 class SAMURAISENSHI_API AActorTrigger_Boss : public AActor
 {
 	GENERATED_UCLASS_BODY()
+
+	UENUM()
+	enum BossTriggerPhase {
+		BossTriggerPhase_Idle,
+		BossTriggerPhase_EnteredTrigger,
+		BossTriggerPhase_FadingToBossCamera,
+		BossTriggerPhase_Spawning,
+		BossTriggerPhase_Fighting,
+		BossTriggerPhase_FightOver,
+		BossTriggerPhase_FadingToRegularCamera
+	};
 
 	/* Components */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
@@ -39,18 +51,16 @@ class SAMURAISENSHI_API AActorTrigger_Boss : public AActor
 	float TransitionStartAt;
 	float TransitionCurrentAt;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera)
-	int32 CurrentPhase;
+	TEnumAsByte<BossTriggerPhase> CurrentPhase;
 
 	// Variable that can be used to disable the triggerzone (i.e. still remaining enemies)
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Camera)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Trigger)
 	bool CanBeTriggered;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Spawner)
+	AActorSpawner_General* BossSpawner;
 
-	void BeginPlay();
+	virtual void BeginPlay();
 	virtual void Tick(float deltaTime) override;
-
-
-	UFUNCTION(BlueprintCallable, Category = Camera)
-	void ToggleCamera();
+	virtual void ReceiveActorBeginOverlap(AActor* OtherActor);
 };

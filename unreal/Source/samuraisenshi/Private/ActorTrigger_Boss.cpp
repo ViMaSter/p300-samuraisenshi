@@ -3,6 +3,7 @@
 #include "samuraisenshi.h"
 #include "Engine.h"
 #include "ActorTrigger_Boss.h"
+#include "GameMode_General.h"
 
 
 AActorTrigger_Boss::AActorTrigger_Boss(const class FPostConstructInitializeProperties& PCIP)
@@ -11,7 +12,7 @@ AActorTrigger_Boss::AActorTrigger_Boss(const class FPostConstructInitializePrope
 	PrimaryActorTick.bCanEverTick = true;
 	CanBeTriggered = true;
 
-	CurrentPhase = 0;
+	CurrentPhase = BossTriggerPhase_Idle;
 	TransitionStartAt = 0.0f;
 	TransitionCurrentAt = 0.0f;
 	TransitionDuration = 1.0f;
@@ -30,8 +31,12 @@ void AActorTrigger_Boss::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (CurrentPhase != 0)
+	if (BossSpawner == NULL)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Error: No enemyspawn set on boss-trigger %s!"), *this->GetName()));
 		return;
+	}
+
 
 	PlayerCharacter = Cast<ACharacter_General>(GetWorld()->GetFirstPlayerController()->GetPawnOrSpectator());
 
@@ -47,9 +52,8 @@ void AActorTrigger_Boss::BeginPlay()
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Warning: More than one trigger set on %s!"), *this->GetName()));
 			break;
 		}
-		else {
-			TriggerComponent = *ShapeIterator;
-		}
+		
+		TriggerComponent = *ShapeIterator;
 
 		MoreThanOneTrigger = true;
 	}
@@ -63,50 +67,56 @@ void AActorTrigger_Boss::Tick(float deltaTime)
 		return;
 
 	switch (CurrentPhase) {
-		case 0:
+		case BossTriggerPhase_Idle:
 			if (GEngine)
 			{
 				AbsoluteStartCameraPosition = GEngine->GetFirstLocalPlayerController(GetWorld())->PlayerCameraManager->ViewTarget.POV.Location;
 				AbsoluteCurrentCameraPosition = AbsoluteStartCameraPosition;
 			}
 			break;
-		case 1:
+		case BossTriggerPhase_EnteredTrigger:
+			CanBeTriggered = false;
+
 			TransitionStartAt = GetWorld()->RealTimeSeconds - deltaTime;
-			CurrentPhase++;
+
 			GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(this, 0.0f, EViewTargetBlendFunction::VTBlend_Linear, 0.0f, false);
-		case 2:
+
+			CurrentPhase = BossTriggerPhase_FadingToBossCamera;
+		case BossTriggerPhase_FadingToBossCamera:
 			TransitionCurrentAt = (GetWorld()->RealTimeSeconds - TransitionStartAt) / TransitionDuration;
 			AbsoluteCurrentCameraPosition = FMath::Lerp(AbsoluteStartCameraPosition, AbsoluteEndCameraPosition, FMath::Min(TransitionCurrentAt, 1.0f));
-			if (TransitionCurrentAt >= 1.0f)
-			{
-				CurrentPhase++;
-			}
 			break;
-		case 4:
+		case BossTriggerPhase_Spawning:
+			BossSpawner->DoSpawn();
+			CurrentPhase = BossTriggerPhase_Fighting;
+			break;
+		case BossTriggerPhase_FightOver:
 			TransitionStartAt = GetWorld()->RealTimeSeconds;
-			CurrentPhase++;
+			CurrentPhase = BossTriggerPhase_FadingToRegularCamera;
 			break;
-		case 5:
+		case BossTriggerPhase_FadingToRegularCamera:
 			AbsoluteStartCameraPosition = PlayerCharacter->SideViewCameraComponent->GetComponentLocation();
 			TransitionCurrentAt = (GetWorld()->RealTimeSeconds - TransitionStartAt) / TransitionDuration;
 			AbsoluteCurrentCameraPosition = FMath::Lerp(AbsoluteEndCameraPosition, AbsoluteStartCameraPosition, FMath::Min(TransitionCurrentAt, 1.0f));
 			if (TransitionCurrentAt >= 1.0f)
 			{
-				CurrentPhase = 0;
+				CurrentPhase = BossTriggerPhase_Idle;
 				GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(PlayerCharacter, 0.0f, EViewTargetBlendFunction::VTBlend_Linear, 0.0f, false);
 			}
 			break;
 	}
 
-	if (CurrentPhase > 0 && CurrentPhase < 2) {
-
-	}
-
 	CameraComponent->SetWorldLocation(AbsoluteCurrentCameraPosition);
 }
 
-void AActorTrigger_Boss::ToggleCamera()
+void AActorTrigger_Boss::ReceiveActorBeginOverlap(AActor* OtherActor)
 {
-	if (CanBeTriggered && CurrentPhase == 0)
-		CurrentPhase++;
+	if (BossSpawner != NULL)
+	{
+		if (Cast<ACharacter_General>(OtherActor))
+		{
+			Cast<AGameMode_General>(GetWorld()->GetAuthGameMode())->ToggleBoss(this);
+			CurrentPhase = BossTriggerPhase_EnteredTrigger;
+		}
+	}
 }

@@ -4,37 +4,48 @@
 #include "ActorTrigger_Boss.h"
 #include "GameMode_General.generated.h"
 
-enum BossPhase {
-	EnteredTrigger,
-	WalkingToPosition,
-	WaitingForBossAnimation,
-	InBattle,
-	Defeated,
-	Exiting
-};
-
 UCLASS(minimalapi)
 class AGameMode_General : public AGameMode
 {
 	GENERATED_UCLASS_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Session)
-	uint32 Playthrough;
+	UENUM()
+	enum BossPhase {
+		BossPhase_Idle,
+		BossPhase_EnteredTrigger,
+		BossPhase_WaitingForPlayerAndCamera,
+		BossPhase_SpawnBoss,
+		BossPhase_WaitingForBossAnimation,
+		BossPhase_InBattle,
+		BossPhase_Defeated,
+		BossPhase_Exiting
+	};
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Session)
-	uint32 Area;
+	int32 Playthrough;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Session)
+	int32 Area;
+
+	UPROPERTY(BlueprintReadOnly, Category = Session)
+	TEnumAsByte<BossPhase> CurrentBossPhase;
 
 	UPROPERTY(BlueprintReadOnly, Category = Session)
 	AActorTrigger_Boss* BossTrigger;
 
-	UPROPERTY(BlueprintReadOnly, Category = Session)
-	uint32 BossPhase = 0;
+	UPROPERTY(BlueprintReadOnly, Category = Logic)
+	FVector PlayerTargetLocation;
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Logic)
+	float BossMovementAccuracy;
+
 	bool AllPlayerMovementDone;
 
 	UFUNCTION(BlueprintCallable, Category = Session)
 	void ToggleBoss(AActorTrigger_Boss* triggerZone);
+
+	// Use thins with "BossPhase_InBattle", when the enemy-animation is done
+	void UpdateBossPhase(BossPhase newBossPhase);
 
 	UFUNCTION()
 	virtual void Tick(float deltaTime);

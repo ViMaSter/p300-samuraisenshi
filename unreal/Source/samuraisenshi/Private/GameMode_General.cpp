@@ -3,15 +3,20 @@
 #include "samuraisenshi.h"
 #include "GameMode_General.h"
 #include "Character_General.h"
+#include "PC_Ingame.h"
 #include "DrawDebugHelpers.h"
 
 AGameMode_General::AGameMode_General(const class FPostConstructInitializeProperties& PCIP)
-	: Super(PCIP)
+: Super(PCIP)
 {
 	Playthrough = 0;
 	Area = 0;
-	BossPhase = 0;
+	CurrentBossPhase = BossPhase_Idle;
+
 	BossTrigger = NULL;
+	PlayerTargetLocation = FVector::ZeroVector;
+	BossMovementAccuracy = 20.0f;
+
 	AllPlayerMovementDone = true;
 
 	// set default pawn class to our Blueprinted character
@@ -22,59 +27,93 @@ AGameMode_General::AGameMode_General(const class FPostConstructInitializePropert
 	}
 }
 
-
 void AGameMode_General::ToggleBoss(AActorTrigger_Boss* triggerZone) {
-	if (BossTrigger != NULL)							// already triggered a boss
+	if (BossTrigger != NULL)								// already triggered a boss
 		return;
-	if (triggerZone == NULL && BossTrigger == NULL)		// useless call
+	if (triggerZone == NULL && BossTrigger == NULL)			// useless call
 		return;
 
-	if (BossPhase == EnteredTrigger) {								// everything seems fine
-		BossTrigger = triggerZone;
-		for (TActorIterator<APlayerController> PC_Iterator(GetWorld()); PC_Iterator; ++PC_Iterator) {
-			APlayerController* currentPC = *PC_Iterator;
+	if (CurrentBossPhase != BossPhase_Idle)					// something is bogus
+		return;
 
-			currentPC->SetCinematicMode(true, true, false);
+	BossTrigger = triggerZone;
+
+	UpdateBossPhase(BossPhase_EnteredTrigger);
+
+	PlayerTargetLocation = FVector(triggerZone->AbsoluteEndCameraPosition);
+
+	UpdateBossPhase(BossPhase_WaitingForPlayerAndCamera);
+}
+
+void AGameMode_General::UpdateBossPhase(BossPhase newBossPhase)
+{
+	BossPhase oldBossPhase = CurrentBossPhase;
+	CurrentBossPhase = newBossPhase;
+
+	switch (newBossPhase)
+	{
+	case BossPhase_WaitingForPlayerAndCamera:
+		// prepare each player
+		for (TActorIterator<APC_Ingame> PC_Iterator(GetWorld()); PC_Iterator; ++PC_Iterator) {
+			APC_Ingame* currentPC = *PC_Iterator;
+
+			currentPC->SetCinematicMode(true, true, false, PlayerTargetLocation);
+			currentPC->BossPhase = APC_Ingame::PlayerCharacterBossPhase_Walking;
 		}
-		BossPhase = BossPhase::WalkingToPosition;
-	}
-	else {
-		return; // weird error
+		break;
+
+	case BossPhase_WaitingForBossAnimation:
+		BossTrigger->CurrentPhase = AActorTrigger_Boss::BossTriggerPhase_Spawning;
+		break;
+
+	case BossPhase_InBattle:
+		for (TActorIterator<APC_Ingame> PC_Iterator(GetWorld()); PC_Iterator; ++PC_Iterator) {
+			APC_Ingame* currentPC = *PC_Iterator;
+			currentPC->SetCinematicMode(false, false, false, PlayerTargetLocation);
+		}
+		break;
+
+	case BossPhase_Defeated:
+		for (TActorIterator<APC_Ingame> PC_Iterator(GetWorld()); PC_Iterator; ++PC_Iterator) {
+			APC_Ingame* currentPC = *PC_Iterator;
+
+			currentPC->SetCinematicMode(true, true, false, PlayerTargetLocation);
+		}
+		break;
+
+	case BossPhase_Exiting:
+		for (TActorIterator<APC_Ingame> PC_Iterator(GetWorld()); PC_Iterator; ++PC_Iterator) {
+			APC_Ingame* currentPC = *PC_Iterator;
+			currentPC->SetCinematicMode(false, false, false, PlayerTargetLocation);
+		}
+		BossTrigger->CurrentPhase = AActorTrigger_Boss::BossTriggerPhase_FightOver;
+		UpdateBossPhase(BossPhase_Idle);
+		break;
 	}
 }
 
 void AGameMode_General::Tick(float delaTime) {
-	switch (BossPhase) {
-		case BossPhase::EnteredTrigger:
-			break;
-		case 1:
-			AllPlayerMovementDone = true;
-			for (TActorIterator<APlayerController> PC_Iterator(GetWorld()); PC_Iterator; ++PC_Iterator) {
-				APlayerController* currentPC = *PC_Iterator;
+	switch (CurrentBossPhase) {
+	case BossPhase_WaitingForPlayerAndCamera:
+		AllPlayerMovementDone = true;
+		for (TActorIterator<APC_Ingame> PC_Iterator(GetWorld()); PC_Iterator; ++PC_Iterator) {
+			APC_Ingame* currentPC = *PC_Iterator;
 
-				if (currentPC->GetCharacter()->GetActorLocation().Y + 20 < BossTrigger->GetActorLocation().Y) {
-					currentPC->GetCharacter()->AddMovementInput(FVector(0, 1, 0));
-					AllPlayerMovementDone = false;
-				}
-				
-				if (currentPC->GetCharacter()->GetActorLocation().Y - 20 > BossTrigger->GetActorLocation().Y) {
-					currentPC->GetCharacter()->AddMovementInput(FVector(0, -1, 0));
-					AllPlayerMovementDone = false;
-				}
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, FString::Printf(TEXT("Left: %f"), (currentPC->GetCharacter()->GetActorLocation().Y - PlayerTargetLocation.Y)));
+
+			if (currentPC->GetCharacter()->GetActorLocation().Y + BossMovementAccuracy < PlayerTargetLocation.Y || currentPC->GetCharacter()->GetActorLocation().Y - BossMovementAccuracy > PlayerTargetLocation.Y) {
+				currentPC->BossPhase = APC_Ingame::PlayerCharacterBossPhase_Walking;
+				AllPlayerMovementDone = false;
 			}
-
-			if (AllPlayerMovementDone) {
-				BossPhase = WaitingForBossAnimation;
+			else {
+				currentPC->BossPhase = APC_Ingame::PlayerCharacterBossPhase_Ready;
 			}
-			break;
-		case BossPhase::WaitingForBossAnimation:
+		}
 
-			break;
-		case BossPhase::InBattle:
-			break;
-		case BossPhase::Defeated:
-			break;
-		case BossPhase::Exiting:
-			break;
+		if (AllPlayerMovementDone && BossTrigger->TransitionCurrentAt > 1.0f) {
+			BossTrigger->CurrentPhase = AActorTrigger_Boss::BossTriggerPhase_Fighting;
+			UpdateBossPhase(BossPhase_WaitingForBossAnimation);
+		}
+		break;
 	}
 }
