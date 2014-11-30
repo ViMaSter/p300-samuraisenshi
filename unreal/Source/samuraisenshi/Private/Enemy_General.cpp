@@ -22,7 +22,7 @@ float AEnemy_General::TakeDamage(float DamageAmount, FDamageEvent const &DamageE
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("%s died! (%f)"), *this->GetName(), CharacterAttributes->get_CurrentRegularHealth()));
 		CharacterAttributes->LastHitBy->TakeDamage(float(-CharacterAttributes->RegularRegeneration), FDamageEvent(UDamage_Heal_General::StaticClass()), GetWorld()->GetFirstPlayerController(), this);
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, FString::Printf(TEXT("%s got healed! (%f)"), *this->GetName(), float(-CharacterAttributes->RegularRegeneration)));
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, FString::Printf(TEXT("%s healed %s! (%f)"), *this->GetName(), *CharacterAttributes->LastHitBy->GetName(), float(-CharacterAttributes->RegularRegeneration)));
 	}
 
 	return Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
