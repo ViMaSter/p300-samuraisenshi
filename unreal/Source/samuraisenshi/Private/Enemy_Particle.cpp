@@ -18,3 +18,14 @@ AEnemy_Particle::AEnemy_Particle(const class FPostConstructInitializeProperties&
 
 
 }
+
+
+float AEnemy_Particle::TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	if (CharacterAttributes->set_RegularDamage(-floor(DamageAmount), true) <= 0)
+	{
+		GetWorld()->DestroyActor(this);
+	}
+
+	return Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+}

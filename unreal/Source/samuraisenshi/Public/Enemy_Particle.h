@@ -13,6 +13,8 @@ class AEnemy_Particle : public AEnemy_General
 {
 	GENERATED_UCLASS_BODY()
 
+	virtual float TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, AController* EventInstigator, AActor* DamageCauser);
+
 	/** Camera boom positioning the camera beside the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Misc)
 	TSubobjectPtr<class UStaticMeshComponent> Sphere;
