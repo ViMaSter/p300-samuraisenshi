@@ -18,7 +18,7 @@ float AEnemy_General::TakeDamage(float DamageAmount, FDamageEvent const &DamageE
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, FString::Printf(TEXT("%s got hit! (%f)"), *this->GetName(), DamageAmount));
 
 	// enemy is dead
-	if (CharacterAttributes->set_RegularDamage(-floor(DamageAmount), true) <= 0)
+	if (CharacterAttributes->set_RegularHealth(-floor(DamageAmount), true) <= 0)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("%s died! (%f)"), *this->GetName(), CharacterAttributes->get_CurrentRegularHealth()));
 		CharacterAttributes->LastHitBy->TakeDamage(float(-CharacterAttributes->RegularRegeneration), FDamageEvent(UDamage_Heal_General::StaticClass()), GetWorld()->GetFirstPlayerController(), this);

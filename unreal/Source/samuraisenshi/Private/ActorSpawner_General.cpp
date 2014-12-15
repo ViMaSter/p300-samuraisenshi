@@ -4,7 +4,6 @@
 #include "Engine.h"
 #include "ActorSpawner_General.h"
 
-
 AActorSpawner_General::AActorSpawner_General(const class FPostConstructInitializeProperties& PCIP)
 	: Super(PCIP)
 {
