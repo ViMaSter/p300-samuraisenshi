@@ -20,6 +20,8 @@ AEnemy_Particle::AEnemy_Particle(const class FPostConstructInitializeProperties&
 	DeathParticle = PCIP.CreateDefaultSubobject<UParticleSystemComponent>(this, TEXT("DeathParticle"));
 	DeathParticle->AttachTo(RootComponent);
 	DeathParticle->bVisible = false;
+
+	DeadAfterSeconds = 0.0f;
 }
 
 
@@ -29,8 +31,22 @@ float AEnemy_Particle::TakeDamage(float DamageAmount, FDamageEvent const &Damage
 
 	if (CharacterAttributes->CurrentRegularHealth <= 0)
 	{
-		GetWorld()->DestroyActor(this);
+		Kill();
 	}
 
 	return previousSuper;
+}
+
+void AEnemy_Particle::Kill() {
+	Sphere->DestroyComponent();
+	Trail->DestroyComponent();
+
+	DeathParticle->bVisible = true;
+	IsDead = true;
+
+	GetWorldTimerManager().SetTimer(this, &AEnemy_Particle::Die, DeadAfterSeconds, true);
+}
+
+void AEnemy_Particle::Die() {
+	GetWorld()->DestroyActor(this);
 }
