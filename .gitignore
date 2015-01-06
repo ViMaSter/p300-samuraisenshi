@@ -8,3 +8,4 @@ raw/
 *.sdf
 *.uproject
 *.opensdf
+/unreal/*.sdf
