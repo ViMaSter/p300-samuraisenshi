@@ -13,15 +13,25 @@ class AEnemy_Particle : public AEnemy_General
 {
 	GENERATED_UCLASS_BODY()
 
+	UFUNCTION(BlueprintCallable, Category = Character)
+	void Kill();
+
+	void Die();
+
 	virtual float TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, AController* EventInstigator, AActor* DamageCauser);
 
-	/** Camera boom positioning the camera beside the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Misc)
 	TSubobjectPtr<class UStaticMeshComponent> Sphere;
 
-	/** Camera boom positioning the camera beside the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Misc)
 	TSubobjectPtr<class UParticleSystemComponent> Trail;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Death)
+	bool IsDead;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Death)
+	float DeadAfterSeconds;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Death)
+	TSubobjectPtr<class UParticleSystemComponent> DeathParticle;
 };

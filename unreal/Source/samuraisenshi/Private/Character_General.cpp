@@ -45,6 +45,8 @@ ACharacter_General::ACharacter_General(const class FPostConstructInitializePrope
 	// Setup attributes
 	CharacterAttributes = PCIP.CreateDefaultSubobject<UComponent_CharacterAttributes>(this, TEXT("CharacterAttributes"));
 	CharacterAttributes->AttachTo(RootComponent);
+
+	Sidestep_Deadzone = 0.01f;
 }
 
 void ACharacter_General::Tick(float deltaTime)
