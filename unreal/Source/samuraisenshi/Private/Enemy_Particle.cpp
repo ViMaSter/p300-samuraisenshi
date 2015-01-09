@@ -29,7 +29,7 @@ float AEnemy_Particle::TakeDamage(float DamageAmount, FDamageEvent const &Damage
 {
 	float previousSuper = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
-	if (CharacterAttributes->CurrentRegularHealth <= 0)
+	if (CharacterAttributes->set_RegularHealth(0, true) <= 0)
 	{
 		Kill();
 	}
