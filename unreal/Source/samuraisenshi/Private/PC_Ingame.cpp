@@ -3,6 +3,7 @@
 #include "samuraisenshi.h"
 #include "GameMode_General.h"
 #include "PC_Ingame.h"
+#include "Engine.h"
 
 
 APC_Ingame::APC_Ingame(const class FPostConstructInitializeProperties& PCIP)
@@ -36,4 +37,8 @@ void APC_Ingame::SetCinematicMode(bool bInCinematicMode, bool bAffectsMovement, 
 	SetIgnoreMoveInput(bAffectsMovement);
 
 	DestinationPosition = EndPosition;
+}
+
+FString APC_Ingame::GetLevelName() {
+	return GetWorld()->GetMapName().Replace(*(GetWorld()->StreamingLevelsPrefix), TEXT(""), ESearchCase::IgnoreCase);
 }
