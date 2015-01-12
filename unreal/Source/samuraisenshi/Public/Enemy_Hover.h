@@ -19,8 +19,6 @@ class SAMURAISENSHI_API AEnemy_Hover : public AEnemy_General
 	virtual void BeginBossFight();
 	virtual void EndBossFight();
 
-
-
 	virtual void BeginPlay();
 	virtual void Tick(float deltaTime);
 };
