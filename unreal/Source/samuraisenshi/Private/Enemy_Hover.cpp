@@ -13,7 +13,7 @@ AEnemy_Hover::AEnemy_Hover(const class FPostConstructInitializeProperties& PCIP)
 
 float AEnemy_Hover::TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	if (CharacterAttributes->set_RegularDamage(-floor(DamageAmount), true) <= 0)
+	if (CharacterAttributes->set_RegularHealth(-floor(DamageAmount), true) <= 0)
 	{
 		Cast<AGameMode_General>(GetWorld()->GetAuthGameMode())->UpdateBossPhase(AGameMode_General::BossPhase_Defeated);
 		GetWorldTimerManager().SetTimer(this, &AEnemy_Hover::EndBossFight, 2.0f, true);

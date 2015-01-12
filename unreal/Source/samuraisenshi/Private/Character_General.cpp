@@ -83,5 +83,10 @@ void ACharacter_General::Move(float intensity)
 		CallOnMove = true;
 	}
 	// add movement in that direction
-	AddMovementInput(FVector(0.f, -1.f, 0.f), intensity);
+	if (!CurrentlyAttacking) {
+		AddMovementInput(FVector(0.f, -1.f, 0.f), intensity);
+	}
+	else {
+		CharacterMovement->Velocity = FVector::ZeroVector;
+	}
 }

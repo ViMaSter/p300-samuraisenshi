@@ -28,4 +28,7 @@ class SAMURAISENSHI_API APC_Ingame : public APlayerController
 	virtual void BeginPlay();
 	virtual void Tick(float deltaTime);
 	virtual void SetCinematicMode(bool bInCinematicMode, bool bAffectsMovement, bool bAffectsTurning, FVector EndPosition);
+
+	UFUNCTION(BlueprintCallable, Category = World)
+	FString GetLevelName();
 };

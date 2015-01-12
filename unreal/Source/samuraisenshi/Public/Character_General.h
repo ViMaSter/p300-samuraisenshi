@@ -41,6 +41,9 @@ class ACharacter_General : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Debug)
 	float DebugZ;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement)
+	bool CurrentlyAttacking;
+
 protected:
 
 	/** Called for side to side input */

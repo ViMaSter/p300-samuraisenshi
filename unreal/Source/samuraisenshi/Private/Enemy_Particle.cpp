@@ -17,6 +17,9 @@ AEnemy_Particle::AEnemy_Particle(const class FPostConstructInitializeProperties&
 	Trail = PCIP.CreateDefaultSubobject<UParticleSystemComponent>(this, TEXT("Trail"));
 	Trail->AttachTo(RootComponent);
 
+	FlameAudio = PCIP.CreateDefaultSubobject<UAudioComponent>(this, TEXT("FlameAudio"));
+	FlameAudio->AttachTo(Trail);
+
 	DeathParticle = PCIP.CreateDefaultSubobject<UParticleSystemComponent>(this, TEXT("DeathParticle"));
 	DeathParticle->AttachTo(RootComponent);
 	DeathParticle->bVisible = false;
