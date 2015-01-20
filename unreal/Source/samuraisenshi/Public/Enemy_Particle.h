@@ -35,6 +35,9 @@ class AEnemy_Particle : public AEnemy_General
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Death)
 	float DeadAfterSeconds;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Death)
+	float KeepDeathParticleForSeconds;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Death)
 	TSubobjectPtr<class UParticleSystemComponent> DeathParticle;
 };
