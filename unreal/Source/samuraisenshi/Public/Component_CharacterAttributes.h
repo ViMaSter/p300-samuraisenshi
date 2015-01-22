@@ -29,6 +29,9 @@ public:
 	int32 SpawningRegularDamage;
 
 	UPROPERTY(EditAnywhere, Category = Character)
+	int32 AddPerPlaythroughDamage;
+
+	UPROPERTY(EditAnywhere, Category = Character)
 	int32 MaxRegularDamage;
 
 	UPROPERTY()
