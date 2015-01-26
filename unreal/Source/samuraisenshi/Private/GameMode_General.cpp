@@ -9,8 +9,6 @@
 AGameMode_General::AGameMode_General(const class FPostConstructInitializeProperties& PCIP)
 : Super(PCIP)
 {
-	Playthrough = 0;
-	Area = 0;
 	CurrentBossPhase = BossPhase_Idle;
 
 	BossTrigger = NULL;

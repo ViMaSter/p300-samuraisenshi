@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "samuraisenshi.h"
-#include "GameMode_General.h"
+#include "GameInstance_General.h"
 #include "Component_CharacterAttributes.h"
 
 
@@ -53,7 +53,7 @@ int32 UComponent_CharacterAttributes::get_MaxRegularDamage()
 
 int32 UComponent_CharacterAttributes::get_CurrentRegularDamage()
 {
-	AGameMode_General* castedGameMode = Cast<AGameMode_General>(GetWorld()->GetAuthGameMode());
+	UGameInstance_General* castedGameMode = Cast<UGameInstance_General>(GetWorld()->GetGameInstance());
 	int32 calculatedDamage = SpawningRegularDamage + (castedGameMode->Playthrough * AddPerPlaythroughDamage);
 	
 	return calculatedDamage > get_MaxRegularDamage() ? get_MaxRegularDamage() : calculatedDamage;

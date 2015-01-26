@@ -21,12 +21,6 @@ class AGameMode_General : public AGameMode
 		BossPhase_Exiting
 	};
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Session)
-	int32 Playthrough;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Session)
-	int32 Area;
-
 	UPROPERTY(BlueprintReadOnly, Category = Session)
 	TEnumAsByte<BossPhase> CurrentBossPhase;
 
