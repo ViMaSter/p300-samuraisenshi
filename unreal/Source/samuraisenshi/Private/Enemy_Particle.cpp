@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "samuraisenshi.h"
+#include "Damage_PlayerSlash.h"
 #include "Damage_Heal_General.h"
 #include "Enemy_Particle.h"
 
@@ -20,8 +21,11 @@ AEnemy_Particle::AEnemy_Particle(const class FPostConstructInitializeProperties&
 	FlameAudio = PCIP.CreateDefaultSubobject<UAudioComponent>(this, TEXT("FlameAudio"));
 	FlameAudio->AttachTo(Trail);
 
-	DeathAudio = PCIP.CreateDefaultSubobject<UAudioComponent>(this, TEXT("DeathAudio"));
-	DeathAudio->AttachTo(Trail);
+	DeathOnCollisionAudio = PCIP.CreateDefaultSubobject<UAudioComponent>(this, TEXT("DeathOnCollisionAudio"));
+	DeathOnCollisionAudio->AttachTo(Trail);
+
+	DeathOnHitAudio = PCIP.CreateDefaultSubobject<UAudioComponent>(this, TEXT("DeathOnHitAudio"));
+	DeathOnHitAudio->AttachTo(Trail);
 
 	DeathParticle = PCIP.CreateDefaultSubobject<UParticleSystemComponent>(this, TEXT("DeathParticle"));
 	DeathParticle->AttachTo(RootComponent);
@@ -38,6 +42,8 @@ float AEnemy_Particle::TakeDamage(float DamageAmount, FDamageEvent const &Damage
 
 	if (CharacterAttributes->CurrentRegularHealth <= 0)
 	{
+		DeathSoundToUse = DamageEvent.DamageTypeClass->IsChildOf(UDamage_PlayerSlash::StaticClass()) == NULL ? &DeathOnHitAudio : &DeathOnCollisionAudio;
+
 		Sphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		GetWorldTimerManager().SetTimer(this, &AEnemy_Particle::Kill, DeadAfterSeconds, true);
 	}
@@ -51,8 +57,8 @@ void AEnemy_Particle::Kill() {
 	Sphere->DestroyComponent();
 	Trail->DestroyComponent();
 
-	if (DeathAudio != NULL)
-		DeathAudio->Play();
+	if (*DeathSoundToUse != NULL)
+		(*DeathSoundToUse)->Play();
 
 	DeathParticle->bVisible = true;
 	IsDead = true;
