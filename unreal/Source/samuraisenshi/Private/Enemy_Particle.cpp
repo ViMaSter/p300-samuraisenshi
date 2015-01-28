@@ -42,7 +42,7 @@ float AEnemy_Particle::TakeDamage(float DamageAmount, FDamageEvent const &Damage
 
 	if (CharacterAttributes->CurrentRegularHealth <= 0)
 	{
-		DeathSoundToUse = DamageEvent.DamageTypeClass->IsChildOf(UDamage_PlayerSlash::StaticClass()) == NULL ? &DeathOnHitAudio : &DeathOnCollisionAudio;
+		DeathSoundToUse = DamageEvent.DamageTypeClass->IsChildOf(UDamage_PlayerSlash::StaticClass()) != NULL ? &DeathOnHitAudio : &DeathOnCollisionAudio;
 
 		Sphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		GetWorldTimerManager().SetTimer(this, &AEnemy_Particle::Kill, DeadAfterSeconds, true);
