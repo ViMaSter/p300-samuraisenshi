@@ -18,4 +18,10 @@ class SAMURAISENSHI_API UGameInstance_General : public UGameInstance
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Session)
 	int32 Area;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Highscore)
+	int32 CurrentScore;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Highscore)
+	int32 PlaythroughScoreModifier;
 };

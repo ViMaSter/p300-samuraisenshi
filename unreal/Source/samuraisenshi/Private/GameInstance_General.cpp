@@ -9,6 +9,9 @@ UGameInstance_General::UGameInstance_General(const class FPostConstructInitializ
 {
 	Playthrough = 0;
 	Area = 0;
+
+	CurrentScore = 0;
+	PlaythroughScoreModifier = 0;
 }
 
 

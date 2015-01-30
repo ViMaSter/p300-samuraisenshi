@@ -41,14 +41,21 @@ int32 UComponent_CharacterAttributes::set_RegularHealth(int32 NewRegularHealth, 
 	return CurrentRegularHealth;
 };
 
+int32 UComponent_CharacterAttributes::get_MaxRegularDamage()
+{
+	return MaxRegularDamage;
+};
+
 int32 UComponent_CharacterAttributes::get_SpawningRegularDamage()
 {
 	return SpawningRegularDamage;
 };
 
-int32 UComponent_CharacterAttributes::get_MaxRegularDamage()
+int32 UComponent_CharacterAttributes::get_ScoreWithPlaythroughModifier()
 {
-	return MaxRegularDamage;
+	UGameInstance_General* castedGameInstance = Cast<UGameInstance_General>(GetWorld()->GetGameInstance());
+	float Multiplier = ((float)castedGameInstance->PlaythroughScoreModifier / 100);
+	return Score + (Score * Multiplier);
 };
 
 int32 UComponent_CharacterAttributes::get_CurrentRegularDamage()

@@ -2,6 +2,7 @@
 
 #include "samuraisenshi.h"
 #include "Damage_Heal_General.h"
+#include "GameInstance_General.h"
 #include "Enemy_General.h"
 
 AEnemy_General::AEnemy_General(const class FPostConstructInitializeProperties& PCIP)
@@ -22,8 +23,14 @@ float AEnemy_General::TakeDamage(float DamageAmount, FDamageEvent const &DamageE
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("%s died! (%f)"), *this->GetName(), CharacterAttributes->get_CurrentRegularHealth()));
 		if (CharacterAttributes->LastHitBy != NULL && CharacterAttributes->LastHitBy != this) {
+			// heal
 			CharacterAttributes->LastHitBy->TakeDamage(float(-CharacterAttributes->RegularRegeneration), FDamageEvent(UDamage_Heal_General::StaticClass()), GetWorld()->GetFirstPlayerController(), this);
 			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, FString::Printf(TEXT("%s healed %s! (%f)"), *this->GetName(), *CharacterAttributes->LastHitBy->GetName(), float(-CharacterAttributes->RegularRegeneration)));
+
+			// add score
+			UGameInstance_General* castedGameInstance = Cast<UGameInstance_General>(GetWorld()->GetGameInstance());
+			castedGameInstance->CurrentScore += CharacterAttributes->get_ScoreWithPlaythroughModifier();
+			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, FString::Printf(TEXT("%s added score of %d!"), *this->GetName(), CharacterAttributes->get_ScoreWithPlaythroughModifier()));
 		}
 	}
 

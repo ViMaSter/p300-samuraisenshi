@@ -37,6 +37,9 @@ public:
 	UPROPERTY()
 	int32 CurrentRegularDamage;
 
+	UPROPERTY(EditAnywhere, Category = Highscores)
+	int32 Score;
+
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Character)
@@ -76,6 +79,11 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = Character)
 	int32 set_RegularDamage(int32 NewRegularHealth, bool relative);
+
+
+
+	UFUNCTION(BlueprintCallable, Category = Highscores)
+	int32 get_ScoreWithPlaythroughModifier();
 
 
 
