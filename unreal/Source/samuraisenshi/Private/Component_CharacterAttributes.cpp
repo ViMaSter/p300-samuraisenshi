@@ -54,7 +54,7 @@ int32 UComponent_CharacterAttributes::get_SpawningRegularDamage()
 int32 UComponent_CharacterAttributes::get_ScoreWithPlaythroughModifier()
 {
 	UGameInstance_General* castedGameInstance = Cast<UGameInstance_General>(GetWorld()->GetGameInstance());
-	float Multiplier = ((float)castedGameInstance->PlaythroughScoreModifier / 100);
+	float Multiplier = ((float)castedGameInstance->PlaythroughScoreModifier / 100) * castedGameInstance->Playthrough;
 	return Score + (Score * Multiplier);
 };
 
