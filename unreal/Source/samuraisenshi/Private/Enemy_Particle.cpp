@@ -29,7 +29,13 @@ AEnemy_Particle::AEnemy_Particle(const class FPostConstructInitializeProperties&
 
 	DeathParticle = PCIP.CreateDefaultSubobject<UParticleSystemComponent>(this, TEXT("DeathParticle"));
 	DeathParticle->AttachTo(RootComponent);
-	DeathParticle->bVisible = false;
+	DeathParticle->bVisible = true;
+	DeathParticle->bAutoActivate = false;
+
+	HitParticle = PCIP.CreateDefaultSubobject<UParticleSystemComponent>(this, TEXT("HitParticle"));
+	HitParticle->AttachTo(RootComponent);
+	HitParticle->bVisible = true;
+	HitParticle->bAutoActivate = false;
 
 	DeadAfterSeconds = 0.0f;
 	KeepDeathParticleForSeconds = 0.0f;
@@ -47,6 +53,9 @@ float AEnemy_Particle::TakeDamage(float DamageAmount, FDamageEvent const &Damage
 		Sphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		GetWorldTimerManager().SetTimer(this, &AEnemy_Particle::Kill, DeadAfterSeconds, true);
 	}
+	else {
+		HitParticle->Activate(true);
+	}
 
 	return previousSuper;
 }
@@ -60,7 +69,7 @@ void AEnemy_Particle::Kill() {
 	if (*DeathSoundToUse != NULL)
 		(*DeathSoundToUse)->Play();
 
-	DeathParticle->bVisible = true;
+	DeathParticle->Activate(true);
 	IsDead = true;
 
 	GetWorldTimerManager().SetTimer(this, &AEnemy_Particle::Die, KeepDeathParticleForSeconds, true);
