@@ -14,6 +14,9 @@ class SAMURAISENSHI_API UComponent_CharacterAttributes : public USceneComponent
 	GENERATED_UCLASS_BODY()
 
 public:
+	UPROPERTY(BlueprintReadWrite, Category = Character)
+	bool IsDead;
+
 	UPROPERTY(EditAnywhere, Category = Character)
 	int32 SpawningRegularHealth;
 
