@@ -35,6 +35,9 @@ class AEnemy_Particle : public AEnemy_General
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Audio)
 	TSubobjectPtr<class UAudioComponent> DeathOnHitAudio;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Audio)
+	TSubobjectPtr<class UAudioComponent> DeathOnHitAudioExplosion;
+
 	TSubobjectPtr<class UAudioComponent>* DeathSoundToUse;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Death)
