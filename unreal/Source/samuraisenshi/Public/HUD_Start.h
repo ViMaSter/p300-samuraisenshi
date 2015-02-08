@@ -5,7 +5,7 @@
 #include "GameFramework/HUD.h"
 #include "HUD_Start.generated.h"
 
-UENUM()
+UENUM(BlueprintType)
 enum HUD_Menu{
 	HUD_Menu_StartUp,
 	HUD_Menu_Start,
