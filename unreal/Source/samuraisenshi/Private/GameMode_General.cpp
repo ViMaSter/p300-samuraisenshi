@@ -9,8 +9,6 @@
 AGameMode_General::AGameMode_General(const class FPostConstructInitializeProperties& PCIP)
 : Super(PCIP)
 {
-	bUseSeamlessTravel = true;
-
 	CurrentBossPhase = BossPhase_Idle;
 
 	BossTrigger = NULL;
