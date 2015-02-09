@@ -7,6 +7,7 @@
 
 UENUM(BlueprintType)
 enum HUD_Menu{
+	HUD_Menu_NONE,
 	HUD_Menu_StartUp,
 	HUD_Menu_Start,
 	HUD_Menu_Controls,
