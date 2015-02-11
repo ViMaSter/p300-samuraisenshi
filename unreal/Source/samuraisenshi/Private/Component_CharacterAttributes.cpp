@@ -38,6 +38,8 @@ int32 UComponent_CharacterAttributes::set_RegularHealth(int32 NewRegularHealth, 
 		CurrentRegularHealth = NewRegularHealth > MaxRegularHealth ? MaxRegularHealth : NewRegularHealth;
 	}
 
+	IsDead = CurrentRegularHealth <= 0;
+
 	return CurrentRegularHealth;
 };
 

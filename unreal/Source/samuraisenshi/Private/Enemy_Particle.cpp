@@ -27,6 +27,10 @@ AEnemy_Particle::AEnemy_Particle(const class FPostConstructInitializeProperties&
 	DeathOnHitAudio = PCIP.CreateDefaultSubobject<UAudioComponent>(this, TEXT("DeathOnHitAudio"));
 	DeathOnHitAudio->AttachTo(Trail);
 
+	DeathOnHitAudioExplosion = PCIP.CreateDefaultSubobject<UAudioComponent>(this, TEXT("DeathOnHitAudioExplosion"));
+	DeathOnHitAudioExplosion->AttachTo(Trail);
+	DeathOnHitAudioExplosion->bAutoActivate = false;
+
 	DeathParticle = PCIP.CreateDefaultSubobject<UParticleSystemComponent>(this, TEXT("DeathParticle"));
 	DeathParticle->AttachTo(RootComponent);
 	DeathParticle->bVisible = true;
@@ -68,6 +72,10 @@ void AEnemy_Particle::Kill() {
 
 	if (*DeathSoundToUse != NULL)
 		(*DeathSoundToUse)->Play();
+
+	if (DeathSoundToUse == &DeathOnHitAudio) {
+		DeathOnHitAudioExplosion->Play();
+	}
 
 	DeathParticle->Activate(true);
 	IsDead = true;
